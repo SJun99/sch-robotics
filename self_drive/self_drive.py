@@ -54,6 +54,16 @@ class SelfDrive(Node):
             if scan.ranges[0] < 0.30 and scan.ranges[0] != 0:
                 self.module = 'start'
 
+            if scan.ranges[305] > scan.ranges[235] * 2:
+                self.module = 'out_conner'
+
+        if self.module == 'out_conner':
+            twist.linear.x = 0.08
+            twist.angular.z = -0.6
+
+            if scan.ranges[305] < 0.20:
+                self.module = 'wall_follow'
+                
         self.pub_velo.publish(twist)
 
 def main(args=None):
