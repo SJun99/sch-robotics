@@ -63,7 +63,7 @@ class SelfDrive(Node):
 
             if scan.ranges[305] < 0.20:
                 self.module = 'wall_follow'
-
+                
         self.pub_velo.publish(twist)
 
 def main(args=None):
