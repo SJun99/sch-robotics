@@ -32,6 +32,27 @@ class SelfDrive(Node):
         if self.module == 'turn':
             twist.linear.x = 0.
             twist.angular.z = 0.4
+            if scan.ranges[315]*0.9 < scan.ranges[270]*1.414 < scan.ranges[315]*1.1 and scan.ranges[0] > 0.25:
+                self.module = 'wall_follow'
+
+        if self.module == 'wall_follow':
+            twist.linear.x = 0.15
+            twist.angular.z = 0.
+
+            if scan.ranges[305] < scan.ranges[235]:
+                twist.linear.x = 0.15
+                twist.angular.z = 0.4
+
+            elif scan.ranges[235] < scan.ranges[305]:
+                twist.linear.x = 0.15
+                twist.angular.z = -0.4
+
+            if scan.ranges[270] < 0.13:
+                twist.linear.x = 0.15
+                twist.angular.z = 0.2
+
+            if scan.ranges[0] < 0.30 and scan.ranges[0] != 0:
+                self.module = 'start'
 
         self.pub_velo.publish(twist)
 
